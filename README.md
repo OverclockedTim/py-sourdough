@@ -10,7 +10,7 @@ This is a hobby project, and as such, no extensive work has been done to make it
 
 Webcam: I used a Logitech Brio 4k, and it's...OK by 2024 standards. I have also used an old iPhone via Camo Studio, but the connection was oddly flakely. In either case, I do recommend using something like Camo Studio which enables you to have easy previews, image modification controls, and, vitally, manual focus controls.  It makes the camera setup nice and visual fast. I tend to just set it up in the background and then point the python at the Camo virtual device. Not necessary, but it makes things easier.
 
-Sourdough Vessel & Lighting: 
+Sourdough Vessel & Lighting: The SAM model seems to have trouble with gradients and rounded corners. As such, I've found it easiest to use square glass vessels to hold the sourdough in. Ideally, the vessel should be small enough that the amount of sourdough starter you are working with takes up a fair amount of vertical space, in other words a very wide jar isn't going to work the best. Rounded jars tend to have shiny glare spots around the curves, so square jars are the best. Finally, make sure that the jar is wide enough that when the sourdough starter is fully risen, you will still be able to easily see the whole video in one webcam shot. 
 
 ## Getting Started
 
