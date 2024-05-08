@@ -3,6 +3,10 @@
 ## Description
 py-sourdough is a hobby project that uses computer vision to help with the process of making great sourdough by watching rising sourdough in a container and even potentially alarming by sending the user an email to alert them that the sourdough starter rise is complete and now ready to use. It can also be used to create some very cool visualizations and timelapse videos of the sourdough rising.  In fact, the alert email automatically attaches an animated gif of the sourdough rise (compressed down to 10s) so that every alert email is accompanied with a super cool visual.
 
+<div align="center">
+  <video src="https://github.com/OverclockedTim/py-sourdough/assets/3019928/32e43d9a-a00a-461a-b642-d5e18d28577b" width="400" />
+</div>
+
 ### Important Warning
 This is a hobby project, and as such, no extensive work has been done to make it work on computers of a different configuration. It is designed to be used on a Windows machine with a webcam, and a WSL2 partition. If you need it to work on a computer of a different configuration, you will likely need to make the changes yourself (pull requests happily accepted!)
 
@@ -24,8 +28,14 @@ Sourdough Vessel & Lighting: The SAM model seems to have trouble with gradients 
 
 These next few steps, you will need to do each type you alarm for a sourdough.  
 
+### Configuration and Pre-Test
 1. Make sure that you have this repo pulled both to a directory in windows, and also to a directory in WSL2. You will use record_from_windows.py to capture screenshots from the windows side, but all the other code will run in WSL2
 2.  Go ahead and get started with your sourdough. Put your starter in front of the camera, and run record_from_windows.py from powershell on your windows side.
 3. Execute the sourdough_notebook.ipynb notebook through the "Save configuration" step.  The purpose of this step is to ensure that your sourdough starter vessel is in the right spot in front of the camera, and that the coordinates for the SAM "prompt" are working to get you a good solid outline of the sourdough. Every one of the stars should be solidly inside the sourdough image being picked up by your webcam.  If it's not, just update the config variables and re-run the notebook from that point. Once the "configuration testing" cell gives you a good solid image, you're all configured.
-4. In a WSL2 shell (and inside the poetry shell for the project), execute alarm.py. 
-5. (Optional) if you feel like making cool videos at some point (such as after the alarm has sounded and your sourdough has risen completely), execute the remaining cells in the sourdough notebook to create videos like the ones shown here.
+
+![aligned_sourdough_coordinates](https://github.com/OverclockedTim/py-sourdough/assets/3019928/7940dfe2-3e3e-4e35-86ba-7fe6f4d7e27b)
+
+### Execution and Post-Processing
+
+5. In a WSL2 shell (and inside the poetry shell for the project), execute alarm.py. 
+6. (Optional) if you feel like making cool videos at some point (such as after the alarm has sounded and your sourdough has risen completely), execute the remaining cells in the sourdough notebook to create videos like the ones shown here.
