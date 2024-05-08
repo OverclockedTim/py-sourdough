@@ -13,6 +13,15 @@ print("PyTorch version:", torch.__version__)
 print("Torchvision version:", torchvision.__version__)
 print("CUDA is available:", torch.cuda.is_available())
 
+#Make sure we have the correct environment variables set up.
+if 'EMAIL' not in os.environ:
+    print("Please set the EMAIL environment variable to the email address you want to send alerts to.")
+    exit()
+
+if 'GMAIL_APP_PASSWORD' not in os.environ:
+    print("Please set the GMAIL_APP_PASSWORD environment variable to the app password for the email account you want to send alerts from.")
+    exit()
+
 # Load the config setup (written out by the notebook).
 try:
     with open('data/config.json') as f:
@@ -305,6 +314,7 @@ def create_animated_gif(folder_path, output_path, file_list):
     os.remove('data/temp_file_list.txt')
 
 
+
 is_done = False
 while not is_done:
     filenames = list_files(folder_path)
@@ -345,20 +355,20 @@ while not is_done:
             # Save the updated cache
             save_cache(cache)
     
-    current_date_time = convert_filename_to_datetime(image_path)
-    time_difference = current_date_time - start_date_time
+        current_date_time = convert_filename_to_datetime(image_path)
+        time_difference = current_date_time - start_date_time
 
-    time_difference_minutes = int(time_difference.total_seconds() / 60)
-    minutes.append(time_difference_minutes)
+        time_difference_minutes = int(time_difference.total_seconds() / 60)
+        minutes.append(time_difference_minutes)
 
-    # Calculate both the growth percentage and the time.
-    # As of right now, calculating and remembering the time is probably unnecessary as it is simply
-    # one per minute. However, by getting this in below as a calculation, it enables us to change the
-    # frame rate of the capture without breaking this part of the code, so we will just do the extra
-    # calculations for now for the sake of redundancy.
-    time_difference_string = calculate_time_difference_string(current_date_time, start_date_time)
-    growth_percentage = (sourdough_size - mask_sizes[0]) / mask_sizes[0] * 100
-    growth_percentages.append(growth_percentage)
+        # Calculate both the growth percentage and the time.
+        # As of right now, calculating and remembering the time is probably unnecessary as it is simply
+        # one per minute. However, by getting this in below as a calculation, it enables us to change the
+        # frame rate of the capture without breaking this part of the code, so we will just do the extra
+        # calculations for now for the sake of redundancy.
+        time_difference_string = calculate_time_difference_string(current_date_time, start_date_time)
+        growth_percentage = (sourdough_size - mask_sizes[0]) / mask_sizes[0] * 100
+        growth_percentages.append(growth_percentage)
 
     #print("Growth Percentage:", growth_percentage)
 
@@ -375,39 +385,44 @@ while not is_done:
         # Find the index where the rate of change goes negative after 4 hours
         peak_activity_index = np.argmax((hours[1:] > 4) & (growth_percentage_rate < 0))
 
+        print("Peak Activity Index:", peak_activity_index)
+
         if peak_activity_index == 0:
             print("Peak activity not detected yet. Continuing to monitor growth...")
             is_done = False
         else:
+        
+            # Get the peak activity time in hours
+            peak_activity_time = hours[peak_activity_index]
+
+            file_name = file_list[peak_activity_index + 1]
+
+            # Extract the timestamp part from the filename
+            timestamp_str = file_name.split('.')[0]  # Remove the file extension
+            timestamp_str = timestamp_str.replace('T', ' ').replace('_', ':')  # Format to a recognizable datetime string
+
+            # Parse the timestamp into a datetime object
+            timestamp_dt = datetime.datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S')
+
+            # Format the datetime object into the desired human-readable form
+            human_readable = timestamp_dt.strftime('%A, %B %d @ %I:%M %p')
+
+            print(f"Peak activity detected at {peak_activity_time:.2f} hours, corresponding to: {human_readable}")
+
+            #Now send myself an email letting me know that the sourdough starter is fully active.
+            subject = "PySourdough Alert: Peak Sourdough Activity Detected"
+            body = f"The sourdough starter has reached peak activity at {human_readable}."
+
+            print("Creating animated gif to send in email...")
+            output_path = 'data/sourdough_growth.gif'
+            create_animated_gif(folder_path, output_path, file_list)
+
+            print("Sending email...")
+            send_email(subject, body, output_path)
+
             is_done = True
 
-        # Get the peak activity time in hours
-        peak_activity_time = hours[peak_activity_index]
 
-        file_name = file_list[peak_activity_index + 1]
-
-        # Extract the timestamp part from the filename
-        timestamp_str = file_name.split('.')[0]  # Remove the file extension
-        timestamp_str = timestamp_str.replace('T', ' ').replace('_', ':')  # Format to a recognizable datetime string
-
-        # Parse the timestamp into a datetime object
-        timestamp_dt = datetime.datetime.strptime(timestamp_str, '%Y-%m-%d %H:%M:%S')
-
-        # Format the datetime object into the desired human-readable form
-        human_readable = timestamp_dt.strftime('%A, %B %d @ %I:%M %p')
-
-        print(f"Peak activity detected at {peak_activity_time:.2f} hours, corresponding to: {human_readable}")
-
-        #Now send myself an email letting me know that the sourdough starter is fully active.
-        subject = "PySourdough Alert: Peak Sourdough Activity Detected"
-        body = f"The sourdough starter has reached peak activity at {human_readable}."
-
-        print("Creating animated gif to send in email...")
-        output_path = 'data/sourdough_growth.gif'
-        create_animated_gif(folder_path, output_path, file_list)
-
-        print("Sending email...")
-        send_email(subject, body, output_path)
     
     if is_done:
         break
