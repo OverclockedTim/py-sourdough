@@ -411,7 +411,7 @@ while not is_done:
 
             #Now send myself an email letting me know that the sourdough starter is fully active.
             subject = "PySourdough Alert: Peak Sourdough Activity Detected"
-            body = f"The sourdough starter has reached peak activity at {human_readable}."
+            body = f"The sourdough starter has reached peak activity at {human_readable}<br/>Total rise time was {peak_activity_time:.2f}."
 
             print("Creating animated gif to send in email...")
             output_path = 'data/sourdough_growth.gif'
