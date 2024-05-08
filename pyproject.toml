@@ -1,0 +1,29 @@
+[tool.poetry]
+name = "py-sourdough"
+version = "0.1.0"
+description = ""
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyudev = "^0.24.1"
+opencv-python = "^4.9.0.80"
+segment-anything = {git = "https://github.com/facebookresearch/segment-anything.git"}
+pycocotools = "^2.0.7"
+matplotlib = "^3.8.4"
+onnxruntime = "^1.17.3"
+onnx = "^1.16.0"
+torch = "^2.3.0"
+torchvision = "^0.18.0"
+tqdm = "^4.66.2"
+seaborn = "^0.13.2"
+pillow = "^10.3.0"
+
+
+[tool.poetry.group.dev.dependencies]
+ipykernel = "^6.29.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

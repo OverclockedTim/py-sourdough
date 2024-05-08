@@ -1,0 +1,34 @@
+# Ignore Python virtual environment files
+venv/
+__pycache__/
+*.py[cod]
+
+# Ignore Poetry dependency management files
+poetry.lock
+pypoetry.toml
+
+# Ignore data subdirectory
+data/
+
+# Ignore cache subdirectory
+cache/
+
+# Ignore timelapse subdirectory
+timelapse/
+
+# Ignore models subdirectory
+models/
+
+# Ignore other common files
+.DS_Store
+.idea/
+.vscode/
+
+#ignore node files.
+node_modules/
+
+#ignore flagged files (not really sure what they are)
+flagged/
+
+#ignore local environment variables
+env.sh
